@@ -1,11 +1,16 @@
 <html>
   <body>
     <h1>Arcade Ball Game Layout Analysis</h1>
+    <div style="float:left;">
     <canvas id="canvas" width="800" height="600"></canvas>
-    <textarea style="width: 400px; height: 200px;" id="txt"></textarea>
+    </div>
+    <div style="float:left;">
+    <textarea style="width: 1400px; height: 600px;" id="txt"></textarea>
+    <br/>
     <button onclick="document.getElementById('txt').innerHTML = outputJSON">
       Generate Output in JSON format
     </button>
+    </div>
     <script>
       //run server with python -m SimpleHTTPServer 8000
       let black = { r: 58, g: 60, b: 58 };
