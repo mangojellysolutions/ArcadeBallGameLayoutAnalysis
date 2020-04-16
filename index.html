@@ -1,136 +1,135 @@
 <html>
-  <body>
-    <h1>Arcade Ball Game Layout Analysis</h1>
-    <div style="float:left;">
-    <canvas id="canvas" width="800" height="600"></canvas>
-    </div>
-    <div style="float:left;">
-    <textarea style="width: 1400px; height: 600px;" id="txt"></textarea>
-    <br/>
-    <button onclick="document.getElementById('txt').innerHTML = outputJSON">
-      Generate Output in JSON format
-    </button>
-    </div>
-    <script>
-      //run server with python -m SimpleHTTPServer 8000
-      let black = { r: 58, g: 60, b: 58 };
-      let white = { r: 250, g: 252, b: 249 };
-      let idx = 0;
-      let outputJSON = null;
-      function scanPixel(ctx, x, y, increment, pixelColour, target = "y") {
-        let targetColourFound = true;
-        let count = 0;
-        while (targetColourFound) {
-          if (increment) count++;
-          else count--;
-          let pixel =
-            target == "y"
-              ? ctx.getImageData(x, y + count, 1, 1).data
-              : ctx.getImageData(x + count, y, 1, 1).data;
-          targetColourFound = pixel[0] == pixelColour.r;
-          if (count > 20) return false;
-        }
-        return count;
-      }
+	<body>
+		<h1>Arcade Ball Game Layout Analysis</h1>
+		<div style="float: left;">
+			<canvas id="canvas" width="800" height="600"></canvas>
+		</div>
+		<div style="float: left;">
+			<textarea style="width: 1400px; height: 600px;" id="txt"></textarea>
+			<br />
+			<button onclick="document.getElementById('txt').innerHTML = outputJSON">
+				Generate Output in JSON format
+			</button>
+		</div>
+		<script>
+			//run server with python -m SimpleHTTPServer 8000
+			let black = { r: 58, g: 60, b: 58 };
+			let white = { r: 250, g: 252, b: 249 };
+			let idx = 0;
+			let outputJSON = null;
+			function scanPixel(ctx, x, y, increment, pixelColour, target = "y") {
+				let targetColourFound = true;
+				let count = 0;
+				while (targetColourFound) {
+					if (increment) count++;
+					else count--;
+					let pixel = target == "y" ? ctx.getImageData(x, y + count, 1, 1).data : ctx.getImageData(x + count, y, 1, 1).data;
+					targetColourFound = pixel[0] == pixelColour.r;
+					if (count > 20) return false;
+				}
+				return count;
+			}
 
-      let img = new Image();
-      img.src = "./icecoldbeer-layout.gif";
-      let canvas = document.getElementById("canvas");
-      let ctx = canvas.getContext("2d");
-      let boundingBox = [];
-      img.onload = () => {
-        (canvas.width = img.width), (canvas.height = img.height);
-        ctx.drawImage(img, 0, 0);
-        for (let y = 0; y < canvas.height; y++) {
-          for (let x = 0; x < canvas.width; x++) {
-            //Have we found a black pixel
-            let pixel = ctx.getImageData(x, y, 1, 1).data;
-            if (pixel[0] == black.r) {
-              //Find our first white pixel inside the circle
-              let count = scanPixel(ctx, x, y, true, black, "y");
-              if (!count) continue;
+			let img = new Image();
+			img.src = "./icecoldbeer-layout.gif";
+			let canvas = document.getElementById("canvas");
+			let ctx = canvas.getContext("2d");
+			let boundingBox = [];
+			img.onload = () => {
+				(canvas.width = img.width), (canvas.height = img.height);
+				ctx.drawImage(img, 0, 0);
+				for (let y = 0; y < canvas.height; y++) {
+					for (let x = 0; x < canvas.width; x++) {
+						//Have we found a black pixel
+						let pixel = ctx.getImageData(x, y, 1, 1).data;
+						if (pixel[0] == black.r) {
+							//Find our first white pixel inside the circle
+							let count = scanPixel(ctx, x, y, true, black, "y");
+							if (!count) continue;
 
-              //found a white pixel inside the circle
-              let yTop = y + count;
-              let yBottom = 0;
+							//found a white pixel inside the circle
+							let yTop = y + count;
+							let yBottom = 0;
 
-              //Keep moving down until we find black again, bottom of circle
-              count = scanPixel(ctx, x, yTop, true, white, "y");
-              if (!count) continue;
-              yBottom = yTop + count;
+							//Keep moving down until we find black again, bottom of circle
+							count = scanPixel(ctx, x, yTop, true, white, "y");
+							if (!count) continue;
+							yBottom = yTop + count;
 
-              //Move up to the middle of the circle along the y axis and count backwards along x until we hit black pixels
-              let yMid = yBottom - (yBottom - yTop) / 2;
-              yMid = parseInt(yMid.toFixed(0));
-              count = scanPixel(ctx, x, yMid, false, white, "x");
-              if (!count) continue;
-              let xLeft = x + count;
+							//Move up to the middle of the circle along the y axis and count backwards along x until we hit black pixels
+							let yMid = yBottom - (yBottom - yTop) / 2;
+							yMid = parseInt(yMid.toFixed(0));
+							count = scanPixel(ctx, x, yMid, false, white, "x");
+							if (!count) continue;
+							let xLeft = x + count;
 
-              //Now count forwards until we find the right hand edge of our circle
-              count = scanPixel(ctx, xLeft, yMid, true, white, "x");
-              if (!count) continue;
-              let xRight = xLeft + count;
-              let xMid = xRight - (xRight - xLeft) / 2;
-              xMid = parseInt(xMid.toFixed(0));
+							//Now count forwards until we find the right hand edge of our circle
+							count = scanPixel(ctx, xLeft, yMid, true, white, "x");
+							if (!count) continue;
+							let xRight = xLeft + count;
+							let xMid = xRight - (xRight - xLeft) / 2;
+							xMid = parseInt(xMid.toFixed(0));
 
-              //We should now have the bounding box
-              if (yBottom != canvas.height) {
-                let len = boundingBox.length;
-                if (
-                  len == 0 ||
-                  boundingBox.findIndex(
-                    (b) => b.xMid == xMid && b.yMid == yMid
-                  ) == -1
-                ) {
-                  let inBounds = false;
-                  for (let i = 0; i < len; i++) {
-                    let bounds = boundingBox[i];
-                    inBounds =
-                      xMid >= bounds.xLeft &&
-                      xMid <= bounds.xRight &&
-                      yMid >= bounds.yTop &&
-                      yMid <= bounds.yBottom;
-                  }
-                  if (!inBounds) {
-                    //Normalise the figure by diving x vars by the width, y vars by the height.  This will mean that we can use any width and height and just multiple x values by the new width and y values against the new height
-                    let normalisedCoords = {
-                      topLeft: {
-                        x: xLeft / canvas.width,
-                        y: yTop / canvas.height,
-                      },
-                      bottomRight: {
-                        x: xRight / canvas.width,
-                        y: yBottom / canvas.height,
-                      },
-                      mid: { x: xMid / canvas.width, y: yMid / canvas.height },
-                    };
-                    boundingBox.push({
-                      id: idx++,
-                      xMid: xMid,
-                      yMid: yMid,
-                      xLeft: xLeft,
-                      xRight: xRight,
-                      yTop: yTop,
-                      yBottom: yBottom,
-                      normalised: normalisedCoords,
-                    });
-                  }
-                }
-              }
-            }
-          }
-        }
+							//We should now have the bounding box
+							if (yBottom != canvas.height) {
+								let len = boundingBox.length;
+								if (len == 0 || boundingBox.findIndex((b) => b.xMid == xMid && b.yMid == yMid) == -1) {
+									let inBounds = false;
+									for (let i = 0; i < len; i++) {
+										let bounds = boundingBox[i];
+										inBounds = xMid >= bounds.xLeft && xMid <= bounds.xRight && yMid >= bounds.yTop && yMid <= bounds.yBottom;
 
-        //show the center points
-        for (let i = 0; i < boundingBox.length; i++)
-          ctx.fillRect(boundingBox[i].xMid, boundingBox[i].yMid, 1, 1);
-        //Create the JSON for the output
-        outputJSON = JSON.stringify(
-          boundingBox.map((obj) => {
-            return obj.normalised;
-          })
-        );
-      };
-    </script>
-  </body>
+										if (!inBounds) {
+											let xVal = xMid - bounds.xMid;
+											let yVal = yMid - bounds.yMid;
+											let distance = Math.sqrt(xVal * xVal + yVal * yVal);
+											if (Math.abs(distance) < 5) {
+												inBounds = true;
+											}
+										}
+										if (inBounds) {
+											break;
+										}
+									}
+									if (!inBounds) {
+										//Normalise the figure by diving x vars by the width, y vars by the height.  This will mean that we can use any width and height and just multiple x values by the new width and y values against the new height
+										let normalisedCoords = {
+											topLeft: {
+												x: xLeft / canvas.width,
+												y: yTop / canvas.height,
+											},
+											bottomRight: {
+												x: xRight / canvas.width,
+												y: yBottom / canvas.height,
+											},
+											mid: { x: xMid / canvas.width, y: yMid / canvas.height },
+										};
+										boundingBox.push({
+											id: idx++,
+											xMid: xMid,
+											yMid: yMid,
+											xLeft: xLeft,
+											xRight: xRight,
+											yTop: yTop,
+											yBottom: yBottom,
+											normalised: normalisedCoords,
+										});
+									}
+								}
+							}
+						}
+					}
+				}
+
+				//show the center points
+				for (let i = 0; i < boundingBox.length; i++) ctx.fillRect(boundingBox[i].xMid, boundingBox[i].yMid, 1, 1);
+				//Create the JSON for the output
+				outputJSON = JSON.stringify(
+					boundingBox.map((obj) => {
+						return obj.normalised;
+					})
+				);
+			};
+		</script>
+	</body>
 </html>
