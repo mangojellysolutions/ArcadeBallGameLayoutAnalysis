@@ -76,7 +76,7 @@ body {
 <div class="row">
   <div class="side">
     <h2>Configuration</h2>
-    <h5>Arcade Layout:</h5>
+    <h5>Layout:</h5>
     <div class="fakeimg" style="height:60px;">
         <div>
             <select style="width: 100%;" aria-placeholder="Select your board">
@@ -85,15 +85,24 @@ body {
         </div>
     </div>
     <p>Ice cold beer, arcade game by Taito.</p>
-    <h3>Dimensions</h3>
-    <p>Please enter the dimensions for you desired board layout.</p>
+    <h5>Dimensions</h5>
     <div class="fakeimg" style="height:60px;"> 
-        <input id="txtWidth" type="text" value="1000"/> Width 
-    </div><br>
-    <div class="fakeimg" style="height:60px;">
-        <input id="txtHeight" type="text" value="1000"/> Height
-    </div><br>
-    <div class="fakeimg" style="height:600px;">Image</div>
+    <select id="selDimensionType" aria-placeholder="Please select type of dimension">
+      <option>Normalised (For code use such as in a game)</option>
+      <option>Custom (physical builds or size know)</option>
+    </select>
+    </div>
+    <div>
+      <p>Please enter the dimensions for you desired board layout.</p>  
+      <div class="fakeimg" style="height:60px;"> 
+          <input id="txtWidth" type="text" value="1000"/> Width 
+      </div><br>
+      <div class="fakeimg" style="height:60px;">
+          <input id="txtHeight" type="text" value="1000"/> Height
+      </div><br>
+    </div>
+    <h5>Board preview</h5>
+    <div class="fakeimg" style="height:600px;"><img src="icecoldbeer-layout.gif"></div>
   </div>
   <div class="main">
     <h2>TITLE HEADING</h2>
