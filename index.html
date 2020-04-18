@@ -1,20 +1,44 @@
 <html>
+	<head>
+		<style>
+			.flex-container {
+				display: flex;
+				align-items: stretch;
+				background-color: #f1f1f1;
+				justify-content: space-between;
+			}
+
+			.flex-container > div {
+				color: white;
+				width: 100%;
+				text-align: center;
+			}
+		
+		</style>
+	</head>
 	<body>
 		<h1>Arcade Ball Game Layout Analysis</h1>
-		<div style="float: left;">
-			<canvas id="canvas" width="800" height="600"></canvas>
+		<div class="flex-container">
+			<div style="flex-grow: 3; margin:auto;">
+				<canvas id="canvas" width="800" height="600"></canvas>
+			</div>
+			
+			<div style="flex-grow: 7">
+				<textarea style="width: 100%; height: 600px;" id="txt"></textarea>
+				<br />
+				<button onclick="document.getElementById('txt').innerHTML = outputJSON">
+					Generate Output in JSON format
+				</button>
+			</div>
 		</div>
-		<div style="float: left;">
-			<textarea style="width: 1400px; height: 600px;" id="txt"></textarea>
-			<br />
-			<button onclick="document.getElementById('txt').innerHTML = outputJSON">
-				Generate Output in JSON format
-			</button>
-		</div>
+
 		<script>
 			//run server with python -m SimpleHTTPServer 8000
-			let black = { r: 58, g: 60, b: 58 };
-			let white = { r: 250, g: 252, b: 249 };
+			let config = {
+				black: { r: 58, g: 60, b: 58 },
+				white: { r: 250, g: 252, b: 249 }
+			}
+			
 			let idx = 0;
 			let outputJSON = null;
 			function scanPixel(ctx, x, y, increment, pixelColour, target = "y") {
@@ -42,9 +66,9 @@
 					for (let x = 0; x < canvas.width; x++) {
 						//Have we found a black pixel
 						let pixel = ctx.getImageData(x, y, 1, 1).data;
-						if (pixel[0] == black.r) {
+						if (pixel[0] == config.black.r) {
 							//Find our first white pixel inside the circle
-							let count = scanPixel(ctx, x, y, true, black, "y");
+							let count = scanPixel(ctx, x, y, true, config.black, "y");
 							if (!count) continue;
 
 							//found a white pixel inside the circle
@@ -52,19 +76,19 @@
 							let yBottom = 0;
 
 							//Keep moving down until we find black again, bottom of circle
-							count = scanPixel(ctx, x, yTop, true, white, "y");
+							count = scanPixel(ctx, x, yTop, true, config.white, "y");
 							if (!count) continue;
 							yBottom = yTop + count;
 
 							//Move up to the middle of the circle along the y axis and count backwards along x until we hit black pixels
 							let yMid = yBottom - (yBottom - yTop) / 2;
 							yMid = parseInt(yMid.toFixed(0));
-							count = scanPixel(ctx, x, yMid, false, white, "x");
+							count = scanPixel(ctx, x, yMid, false, config.white, "x");
 							if (!count) continue;
 							let xLeft = x + count;
 
 							//Now count forwards until we find the right hand edge of our circle
-							count = scanPixel(ctx, xLeft, yMid, true, white, "x");
+							count = scanPixel(ctx, xLeft, yMid, true, config.white, "x");
 							if (!count) continue;
 							let xRight = xLeft + count;
 							let xMid = xRight - (xRight - xLeft) / 2;
