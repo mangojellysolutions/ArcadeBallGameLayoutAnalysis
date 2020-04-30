@@ -1,0 +1,23 @@
+App.ActiveDocument.Sketch.addGeometry(Part.Circle(App.Vector(10,10,0),App.Vector(0,0,1),10),False)
+App.ActiveDocument.Sketch.addGeometry(Part.Circle(App.Vector(20,10,0),App.Vector(0,0,1),10),False)
+App.ActiveDocument.Sketch.addGeometry(Part.Circle(App.Vector(30,10,0),App.Vector(0,0,1),10),False)
+App.ActiveDocument.Sketch.addGeometry(Part.Circle(App.Vector(40,10,0),App.Vector(0,0,1),10),False)
+App.ActiveDocument.Sketch.addGeometry(Part.Circle(App.Vector(50,10,0),App.Vector(0,0,1),10),False)
+App.ActiveDocument.Sketch.addGeometry(Part.Circle(App.Vector(60,10,0),App.Vector(0,0,1),10),False)
+App.getDocument('Unnamed1').recompute()
+
+class Coords:
+  def __init__(self, x, y, w):
+    self.x = x
+    self.y = y
+    self.w = w
+
+list = []
+list.append( Coords(10, 10, 10) )
+list.append( Coords(50, 50, 10) )
+
+for p1 in list:
+    # calling method
+    App.ActiveDocument.Sketch.addGeometry(Part.Circle(App.Vector(p1.x,p1.y,0),App.Vector(0,0,1),p1.w),False)
+
+App.getDocument('Unnamed1').recompute()
