@@ -34,9 +34,17 @@
 
 		<script>
 			//run server with python -m SimpleHTTPServer 8000
-			let config = {
+			
+			/*let config = {
+				
 				black: { r: 58, g: 60, b: 58 },
 				white: { r: 250, g: 252, b: 249 }
+			}*/
+			
+			let config = {
+				
+				black: { r: 0, g: 0, b: 0 },
+				white: { r: 255, g: 255, b: 255 }
 			}
 			
 			let idx = 0;
@@ -49,13 +57,13 @@
 					else count--;
 					let pixel = target == "y" ? ctx.getImageData(x, y + count, 1, 1).data : ctx.getImageData(x + count, y, 1, 1).data;
 					targetColourFound = pixel[0] == pixelColour.r;
-					if (count > 20) return false;
+					if (count > 100) return false;
 				}
 				return count;
 			}
 
 			let img = new Image();
-			img.src = "./icecoldbeer-layout.gif";
+			img.src = "./icecoldbeer-layout-3.gif";
 			let canvas = document.getElementById("canvas");
 			let ctx = canvas.getContext("2d");
 			let boundingBox = [];
