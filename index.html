@@ -34,36 +34,34 @@
 
 		<script>
 			//run server with python -m SimpleHTTPServer 8000
-			
-			/*let config = {
-				
-				black: { r: 58, g: 60, b: 58 },
-				white: { r: 250, g: 252, b: 249 }
-			}*/
-			
+			const red = { r: 254, g: 0, b: 0 };
+			const blue = {r:0, g:228, b:255};
+			const green = {r:36, g:254, b:0};
 			let config = {
-				
-				black: { r: 0, g: 0, b: 0 },
-				white: { r: 255, g: 255, b: 255 }
+				target: blue,
+				bgColour: { r: 0, g: 0, b: 0 }
 			}
+			const maxDistance = 125;
+		
 			
 			let idx = 0;
 			let outputJSON = null;
 			function scanPixel(ctx, x, y, increment, pixelColour, target = "y") {
-				let targetColourFound = true;
+				let targetColourFound = false;
 				let count = 0;
-				while (targetColourFound) {
+				
+				while (!targetColourFound) {
+					let pixel = target == "y" ? ctx.getImageData(x, y + count, 1, 1).data : ctx.getImageData(x + count, y, 1, 1).data;
+					targetColourFound = (pixel[0] == pixelColour.r && pixel[1] == pixelColour.g && pixel[2] == pixelColour.b);
+					if (count > maxDistance) return false;
 					if (increment) count++;
 					else count--;
-					let pixel = target == "y" ? ctx.getImageData(x, y + count, 1, 1).data : ctx.getImageData(x + count, y, 1, 1).data;
-					targetColourFound = pixel[0] == pixelColour.r;
-					if (count > 100) return false;
 				}
 				return count;
 			}
 
 			let img = new Image();
-			img.src = "./icecoldbeer-layout-3.gif";
+			img.src = "./icecoldbeer-layout-4.gif";
 			let canvas = document.getElementById("canvas");
 			let ctx = canvas.getContext("2d");
 			let boundingBox = [];
@@ -72,36 +70,35 @@
 				ctx.drawImage(img, 0, 0);
 				for (let y = 0; y < canvas.height; y++) {
 					for (let x = 0; x < canvas.width; x++) {
+					
 						//Have we found a black pixel
 						let pixel = ctx.getImageData(x, y, 1, 1).data;
-						if (pixel[0] == config.black.r) {
-							//Find our first white pixel inside the circle
-							let count = scanPixel(ctx, x, y, true, config.black, "y");
+						//console.log(pixel[0], pixel[1], pixel[2],pixel[3]);
+						if (pixel[0] == config.target.r && pixel[1] == config.target.g && pixel[2] == config.target.b) {
+							let yTop = y;
+
+							//Find the next bgColour pixel scanning down through the circle
+							let count = scanPixel(ctx, x, y, true, config.bgColour, "y");
 							if (!count) continue;
-
-							//found a white pixel inside the circle
-							let yTop = y + count;
-							let yBottom = 0;
-
-							//Keep moving down until we find black again, bottom of circle
-							count = scanPixel(ctx, x, yTop, true, config.white, "y");
-							if (!count) continue;
-							yBottom = yTop + count;
-
-							//Move up to the middle of the circle along the y axis and count backwards along x until we hit black pixels
+							//found a bgColour pixel inside the circle
+							let yBottom = yTop + count-1 ;
+							//Move up to the middle of the circle along the y axis and count backwards along x until we hit background pixels
 							let yMid = yBottom - (yBottom - yTop) / 2;
 							yMid = parseInt(yMid.toFixed(0));
-							count = scanPixel(ctx, x, yMid, false, config.white, "x");
+							count = scanPixel(ctx, x, yMid, true, config.bgColour, "x");
+						
 							if (!count) continue;
-							let xLeft = x + count;
-
+							let xRight = x + count-2;
+						
 							//Now count forwards until we find the right hand edge of our circle
-							count = scanPixel(ctx, xLeft, yMid, true, config.white, "x");
+							count = scanPixel(ctx, xRight, yMid, false, config.bgColour, "x");
 							if (!count) continue;
-							let xRight = xLeft + count;
+							let xLeft = xRight + count+1;
 							let xMid = xRight - (xRight - xLeft) / 2;
 							xMid = parseInt(xMid.toFixed(0));
 
+							//advance x outside hole
+							x +=xRight;
 							//We should now have the bounding box
 							if (yBottom != canvas.height) {
 								let len = boundingBox.length;
@@ -124,8 +121,10 @@
 										}
 									}
 									if (!inBounds) {
+										let diameter =  xRight - xLeft;
 										//Normalise the figure by diving x vars by the width, y vars by the height.  This will mean that we can use any width and height and just multiple x values by the new width and y values against the new height
 										let normalisedCoords = {
+											diameter: diameter,
 											topLeft: {
 												x: xLeft / canvas.width,
 												y: yTop / canvas.height,
@@ -150,11 +149,13 @@
 								}
 							}
 						}
+
 					}
 				}
 
 				//show the center points
-				for (let i = 0; i < boundingBox.length; i++) ctx.fillRect(boundingBox[i].xMid, boundingBox[i].yMid, 1, 1);
+				//ctx.fillStyle="red";
+				//for (let i = 0; i < boundingBox.length; i++) ctx.fillRect(boundingBox[i].xMid, boundingBox[i].yMid, 5, 5);
 				//Create the JSON for the output
 				outputJSON = JSON.stringify(
 					boundingBox.map((obj) => {
