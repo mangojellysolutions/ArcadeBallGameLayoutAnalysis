@@ -13,8 +13,8 @@
 				width: 100%;
 				text-align: center;
 			}
-		
 		</style>
+		<script src="config.js" ></script>
 	</head>
 	<body>
 		<h1>Arcade Ball Game Layout Analysis</h1>
@@ -33,17 +33,7 @@
 		</div>
 
 		<script>
-			//run server with python -m SimpleHTTPServer 8000
-			const red = { r: 254, g: 0, b: 0 };
-			const blue = {r:0, g:228, b:255};
-			const green = {r:36, g:254, b:0};
-			let config = {
-				target: blue,
-				bgColour: { r: 0, g: 0, b: 0 }
-			}
 			const maxDistance = 125;
-		
-			
 			let idx = 0;
 			let outputJSON = null;
 			function scanPixel(ctx, x, y, increment, pixelColour, target = "y") {
@@ -61,7 +51,7 @@
 			}
 
 			let img = new Image();
-			img.src = "./icecoldbeer-layout-4.gif";
+			img.src = "./Layouts/icecoldbeer-colour.gif";
 			let canvas = document.getElementById("canvas");
 			let ctx = canvas.getContext("2d");
 			let boundingBox = [];
@@ -153,9 +143,6 @@
 					}
 				}
 
-				//show the center points
-				//ctx.fillStyle="red";
-				//for (let i = 0; i < boundingBox.length; i++) ctx.fillRect(boundingBox[i].xMid, boundingBox[i].yMid, 5, 5);
 				//Create the JSON for the output
 				outputJSON = JSON.stringify(
 					boundingBox.map((obj) => {
