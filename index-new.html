@@ -17,7 +17,11 @@ body {
   margin: 0;
   height: 100%;
 }
-
+input[type=text] {
+  width: 6em;
+  margin-right: .5em;
+  text-align: center;
+}
 /* Style the buttons that are used to open and close the accordion panel */
 .accordion {
   background-color: #eee;
@@ -149,7 +153,7 @@ body {
         <div>
           <p>Please enter the dimensions for you desired board layout.</p>  
           <div class="fakeimg" style="height:60px;"> 
-              <input id="txtWidth" type="text" value="1000"/> Width 
+              <input id="txtWidth" type="text" width="100px" value="1000"/> Width 
           </div><br>
           <div class="fakeimg" style="height:60px;">
               <input id="txtHeight" type="text" value="1000"/> Height
@@ -159,7 +163,7 @@ body {
 
     <button class="accordion"><strong>Board preview</strong></button>
     <div class="panel">
-      <div class="fakeimg" style="height:600px;"><img src="icecoldbeer-layout.gif"></div>
+      <div><img class="previewImage" src="Layouts/icecoldbeer-colour.gif" width="200px"></div>
     </div>
     
     
@@ -167,7 +171,7 @@ body {
   </div>
   <div class="main">
    
-    <div class="fakeimg checkeredBoard"><img src="icecoldbeer-layout.gif"></div>
+    <div class="fakeimg checkeredBoard"><img src="Layouts/icecoldbeer-colour.gif"></div>
     <p>Some text..</p>
     
   </div>
