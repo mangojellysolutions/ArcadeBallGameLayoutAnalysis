@@ -4,8 +4,7 @@
 <title>Page Title</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
 <style>
 * {
   box-sizing: border-box;
@@ -96,7 +95,10 @@ input[type=text] {
   text-align: center;
 }
 
-
+.caret{
+  position: absolute;
+  left:15em;
+}
 .checkeredBoard {
   background-image: /* tint image */
                       linear-gradient(to right, rgba(192, 192, 192, 0.75), rgba(192, 192, 192, 0.75)),
@@ -129,7 +131,7 @@ input[type=text] {
 <div class="row">
   <div class="side scrollable-content">
     <h2>Configuration</h2>
-    <button class="accordion"><strong>Layout:</strong></button>
+    <button class="accordion"><strong>Layout</strong><i class="caret fas fa-caret-down"></i></button>
     <div class="panel">
       <div class="fakeimg" style="height:60px;">
         <div>
@@ -141,7 +143,7 @@ input[type=text] {
     <p>Ice cold beer, arcade game by Taito.</p>
     </div>
     
-    <button class="accordion"> <strong>Dimensions</strong></button>
+    <button class="accordion"> <strong>Dimensions</strong><i class="caret fas fa-caret-down"></i></button>
     <div class="panel">
      
       <div class="fakeimg" style="height:60px;"> 
@@ -161,7 +163,7 @@ input[type=text] {
         </div>
     </div>
 
-    <button class="accordion"><strong>Board preview</strong></button>
+    <button class="accordion"><strong>Board preview</strong><i class="caret fas fa-caret-down"></i></button>
     <div class="panel">
       <div><img class="previewImage" src="Layouts/icecoldbeer-colour.gif" width="200px"></div>
     </div>
