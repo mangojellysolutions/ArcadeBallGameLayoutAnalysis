@@ -1,126 +1,131 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Arcade Ball Game Layout Analysis</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
-<style>
-* {
-  box-sizing: border-box;
-}
+  <title>Arcade Ball Game Layout Analysis</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
+  <style>
+  * {
+    box-sizing: border-box;
+  }
 
-/* Style the body */
-body {
-  font-family: Arial;
-  margin: 0;
-  height: 100%;
-}
-input[type=text] {
-  width: 6em;
-  margin-right: .5em;
-  text-align: center;
-}
+  /* Style the body */
+  body {
+    font-family: Arial;
+    margin: 0;
+    height: 100%;
+  }
+  input[type=text] {
+    width: 6em;
+    margin-right: .5em;
+    text-align: center;
+  }
 
-/* Style the buttons that are used to open and close the accordion panel */
-.accordion {
-  background-color: #eee;
-  color: #444;
-  cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  text-align: left;
-  border: none;
-  outline: none;
-  transition: 0.4s;
-}
+  /* Style the buttons that are used to open and close the accordion panel */
+  .accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+  }
 
-/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-.active, .accordion:hover {
-  background-color: #ccc;
-}
-/* Style the accordion panel. Note: hidden by default */
-.panel {
-  padding: 0 18px;
-  background-color: white;
-  border-color: #cccccc;
-  border-style: solid;
-  border-width: 0.1em;
-  display: none;
-  overflow: hidden;
-}
+  /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+  .active, .accordion:hover {
+    background-color: #ccc;
+  }
+  /* Style the accordion panel. Note: hidden by default */
+  .panel {
+    padding: 0 18px;
+    background-color: white;
+    border-color: #cccccc;
+    border-style: solid;
+    border-width: 0.1em;
+    display: none;
+    overflow: hidden;
+  }
 
-/* Style the top navigation bar */
-.navbar {
-  display: flex;
-  background-color: #333;
-  color: white;
-  padding: 10px 20px;
-}
+  /* Style the top navigation bar */
+  .navbar {
+    display: flex;
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+  }
 
+  /* Column container */
+  .row {  
+    display: flex;
+    flex-wrap: wrap;
+  }
 
-/* Column container */
-.row {  
-  display: flex;
-  flex-wrap: wrap;
-}
+  /* Create two unequal columns that sits next to each other */
+  /* Sidebar/left column */
+  .side {
+    flex: 30%;
+    background-color: #f1f1f1;
+    padding: 20px;
+  }
 
-/* Create two unequal columns that sits next to each other */
-/* Sidebar/left column */
-.side {
-  flex: 30%;
-  background-color: #f1f1f1;
-  padding: 20px;
-}
+  .scrollable-content {
+    height: 100vh;
+    flex-grow: 1;
+    overflow-y: scroll;
+    
+    /* for Firefox */
+    min-height: 0;
+  }
 
-.scrollable-content {
-  height: 100vh;
-  flex-grow: 1;
-  overflow-y: scroll;
-  
-  /* for Firefox */
-  min-height: 0;
-}
+  /* Main column */
+  .main {
+    flex: 70%;
+    background-color: white;
+    padding: 20px;
+  }
 
-/* Main column */
-.main {
-  flex: 70%;
-  background-color: white;
-  padding: 20px;
-}
+  .fakeimg {
+    background-color: #aaa;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+  }
 
-.fakeimg {
-  background-color: #aaa;
-  width: 100%;
-  padding: 20px;
-  text-align: center;
-}
+  .caret{
+    position: absolute;
+    left:15em;
+  }
 
-.caret{
-  position: absolute;
-  left:15em;
-}
-.checkeredBoard {
-  background-image: /* tint image */
-                      linear-gradient(to right, rgba(192, 192, 192, 0.75), rgba(192, 192, 192, 0.75)),
-                      /* checkered effect */
-                      linear-gradient(to right, black 50%, white 50%),
-                      linear-gradient(to bottom, black 50%, white 50%);
+  .center {
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+  }
+
+  .checkeredBoard {
+    background-image: /* tint image */
+                        linear-gradient(to right, rgba(192, 192, 192, 0.75), rgba(192, 192, 192, 0.75)),
+                        /* checkered effect */
+                        linear-gradient(to right, black 50%, white 50%),
+                        linear-gradient(to bottom, black 50%, white 50%);
     background-blend-mode: normal, difference, normal;
     background-size: 8em 8em;
-}
-
-/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 700px) {
-  .row, .navbar {   
-    flex-direction: column;
   }
-}
-</style>
+
+  /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 700px) {
+    .row, .navbar {   
+      flex-direction: column;
+    }
+  }
+  </style>
 </head>
 <body>
-
-
 <!-- Navigation Bar -->
 <div class="navbar">
     <h2>Arcade Layout Creator</h2>
@@ -134,44 +139,39 @@ input[type=text] {
     <div class="panel">
       <div class="fakeimg" style="height:60px;">
         <div>
-            <select style="width: 100%;" aria-placeholder="Select your board">
-                <option>Ice Cold Beer</option>
-            </select>
+          <select style="width: 100%;" aria-placeholder="Select your board">
+            <option>Ice Cold Beer</option>
+          </select>
         </div>
+      </div>
+      <p>Ice cold beer, arcade game by Taito.</p>
     </div>
-    <p>Ice cold beer, arcade game by Taito.</p>
-    </div>
-    
     <button class="accordion"> <strong>Dimensions</strong><i class="caret fas fa-caret-down"></i></button>
     <div class="panel">
-     
       <div class="fakeimg" style="height:60px;"> 
         <select id="selDimensionType" aria-placeholder="Please select type of dimension" onchange="selDimensionTypeChange(this)">
           <option>Normalised</option>
           <option>Custom</option>
         </select>
-        </div>
-        <div>
-          <p>Please enter the dimensions for you desired board layout.</p>  
-          <div class="fakeimg" style="height:60px;"> 
-              <input id="txtWidth" type="text" width="100px" value="1000" disabled/> Width 
-          </div><br>
-          <div class="fakeimg" style="height:60px;">
-              <input id="txtHeight" type="text" value="1000" disabled/> Height
-          </div><br>
-        </div>
+      </div>
+      <div>
+        <p>Please enter the dimensions for you desired board layout.</p>  
+        <div class="fakeimg" style="height:60px;"> 
+          <input id="txtWidth" type="text" width="100px" value="1000" disabled/> Width 
+        </div><br>
+        <div class="fakeimg" style="height:60px;">
+          <input id="txtHeight" type="text" value="1000" disabled/> Height
+        </div><br>
+      </div>
     </div>
-
     <button class="accordion"><strong>Board preview</strong><i class="caret fas fa-caret-down"></i></button>
     <div class="panel">
-      <div><img class="previewImage" src="Layouts/icecoldbeer-colour.gif" width="200px"></div>
+      <div align="center"><img class="previewImage" src="Layouts/icecoldbeer-colour.gif" width="200px"></div>
     </div>
   </div>
   <div class="main">
-   
     <div class="fakeimg checkeredBoard"><img src="Layouts/icecoldbeer-colour.gif"></div>
     <p>Some text..</p>
-    
   </div>
 </div>
 
@@ -203,6 +203,5 @@ input[type=text] {
     });
   }
 </script>
-
 </body>
 </html>
