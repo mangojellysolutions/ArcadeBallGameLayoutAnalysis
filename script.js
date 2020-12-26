@@ -44,7 +44,6 @@ function addToCollection(canvas, xMid, yMid, xLeft, xRight, yTop, yBottom ){
 }
 
 function createOutput(){
-
     //Create the JSON for the output
     outputJSON = JSON.stringify(
         boundingBox.map((obj) => {
@@ -52,20 +51,21 @@ function createOutput(){
         })
     );
 }
-
-function processImage(canvas, ctx, img){  
-    canvas.width = img.width; 
-	canvas.height = img.height; 
-    ctx.drawImage(img, 0, 0);
+function outputMap(canvas, ctx, obj){
+    //Need to apply offscreen canvas
+    //https://developers.google.com/web/updates/2018/08/offscreen-canvas
+    processImage(canvas, ctx, obj);
+   obj.innerHTML = outputJSON;
+}
+function processImage(canvas, ctx, obj){  
     for (let y = 0; y < canvas.height; y++) {
+        obj.innerHTML = "Processing "+y+" of "+canvas.height+ "pixel lines";
         for (let x = 0; x < canvas.width; x++) {
-        
             //Have we found a black pixel
             let pixel = ctx.getImageData(x, y, 1, 1).data;
             //console.log(pixel[0], pixel[1], pixel[2],pixel[3]);
             if (pixel[0] == config.target.r && pixel[1] == config.target.g && pixel[2] == config.target.b) {
                 let yTop = y;
-
                 //Find the next bgColour pixel scanning down through the circle
                 let count = scanPixel(ctx, x, y, true, config.bgColour, "y");
                 if (!count) continue;
@@ -118,5 +118,6 @@ function processImage(canvas, ctx, img){
 
         }
     }
+    console.log('finished')
     createOutput();
 }

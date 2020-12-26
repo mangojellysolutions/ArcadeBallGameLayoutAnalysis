@@ -183,7 +183,7 @@
       </div>
       <br/>
       <div>
-        <button onclick="document.getElementById('txt').innerHTML = outputJSON">
+        <button onclick="outputMap(canvas, ctx, document.getElementById('txt'))">
 					Generate Output
 				</button>
       </div>
@@ -209,7 +209,9 @@
   let ctx = canvas.getContext("2d");
   
   img.onload = () => {
-    processImage(canvas, ctx, img);
+    canvas.width = img.width; 
+	  canvas.height = img.height; 
+    ctx.drawImage(img, 0, 0);
   };
 
   const selDimensionTypeChange = (obj)  => {
