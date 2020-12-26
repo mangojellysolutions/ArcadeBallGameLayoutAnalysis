@@ -124,8 +124,6 @@
     }
   }
   </style>
-  <script src="config.js" ></script>
-  <script src="script.js" ></script>
 </head>
 <body>
 <!-- Navigation Bar -->
@@ -183,7 +181,7 @@
       </div>
       <br/>
       <div>
-        <button onclick="document.getElementById('txt').innerHTML = outputJSON">
+        <button onclick="outputMap()">
 					Generate Output
 				</button>
       </div>
@@ -202,15 +200,36 @@
   </div>
 </div>
 <script>
-  const maxDistance = 125;
-  let img = new Image();
-  img.src = "./Layouts/icecoldbeer-colour.gif";
-  let canvas = document.getElementById("canvas");
-  let ctx = canvas.getContext("2d");
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  const worker = new Worker("worker.js");
   
+  worker.onmessage = (e) => {
+    switch(e.data.id){
+      case "result":
+        document.getElementById('txt').innerHTML = e.data.payload;
+      break;
+    }
+		console.log(e.data);
+  }
+  const img = new Image();
+  img.src = "./Layouts/icecoldbeer-colour.gif";
+  //img.src = "./Layouts/Old/icecoldbeer-layout-2.gif";
   img.onload = () => {
-    processImage(canvas, ctx, img);
+    canvas.width = img.width; 
+	  canvas.height = img.height; 
+    ctx.drawImage(img, 0, 0);
   };
+
+  const outputMap = () => {
+    console.log("Generating map ...");
+    worker.postMessage({ 
+      id:"pixelData", 
+      payload: {
+        pixels:ctx.getImageData(0,0,canvas.width, canvas.height) 
+      }
+    });
+  }
 
   const selDimensionTypeChange = (obj)  => {
     if (obj.value === "Custom"){
