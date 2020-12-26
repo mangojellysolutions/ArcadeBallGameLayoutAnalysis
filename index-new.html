@@ -173,7 +173,7 @@
     <button class="accordion"> <strong>Output</strong><i class="caret fas fa-caret-down"></i></button>
     <div class="panel">
       <div>
-        <p>Please enter the ouput type and click the "Go" button once you are happy with all the options. The output will be produced in the text area below.</p>     
+        <p>Please enter the ouput type and click the "Generate Output" button once you are happy with all the options. The output will be produced in the text area below.</p>     
       </div>
       <div class="fakeimg" style="height:60px;"> 
         <select id="selOutputType" aria-placeholder="Please select type of output">
@@ -183,7 +183,9 @@
       </div>
       <br/>
       <div>
-        <button>GO!</button>
+        <button onclick="document.getElementById('txt').innerHTML = outputJSON">
+					Generate Output
+				</button>
       </div>
       <br/>
       <div>
