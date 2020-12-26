@@ -22,4 +22,14 @@ $ python -m SimpleHTTPServer 8000
 (Replace the port with the port you have supplied).
 
 Usage
-The index page will load the main application.  On the left you will see the layout of the board which has been loaded from the Layouts directory and on the right a text area along with a button.  Clicking the button will process the image to figure out the position of the predefined coloured holes so this will need to be defined in the code first in the config.
+The index page will load the main application.  On the right you will see the layout of the board which has been loaded from the Layouts directory and on the left a accordian with options.  
+
+The first option "Layout" contains a list of all the layouts available (currently only "ice cold beer"). 
+
+The second option "Preview" contains a preview of the selected layout.
+
+The third option "Dimensions" contains a dropdown to select 
+"Normalised": Allowing a normalised result to be multiplied with any base width or height applicable to the end application. 
+"Custom": Will enable the width and height input boxes to allow a value in millimeters to be entered for the base width and height of the end application to be entered and all hole locations will be calculated using these.
+
+The fouth option "Output" contains a number of dropdowns to select the output format (at the moment only JSON is available), the colour holes that you want to calculate positions for.  It also contains the button to create the ouput which will be written to the textarea within.
