@@ -13,7 +13,7 @@ $ sudo apt install python
 
 Other http servers that can be run from a terminal with a single line can be found at https://gist.github.com/willurd/5720255
 
-Running
+##Running
 1. Clone the repo
 2. Open a ternimal and cd to the ArcadeBallGameLayoutAnalysis
 3. Run the http server onliner i.e.
@@ -21,7 +21,7 @@ $ python -m SimpleHTTPServer 8000
 4. Open up a browser window and navigate to http://localhost:8000/index.html
 (Replace the port with the port you have supplied).
 
-Usage
+##Usage
 The index page will load the main application.  On the right you will see the layout of the board which has been loaded from the Layouts directory and on the left a accordian with options.  
 
 The first option "Layout" contains a list of all the layouts available (currently only "ice cold beer"). 
