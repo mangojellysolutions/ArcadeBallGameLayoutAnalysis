@@ -65,17 +65,19 @@ function scanPixel(x, y, increment, pixelColour, target = "y") {
 function addToCollection(xMid, yMid, xLeft, xRight, yTop, yBottom ){
     let diameter =  xRight - xLeft;
     //Normalise the figure by diving x vars by the width, y vars by the height.  This will mean that we can use any width and height and just multiple x values by the new width and y values against the new height
+    const customWidth = state.dimensions.type.toLowerCase() == "custom" ?  state.dimensions.width : 1;
+    const customHeight = state.dimensions.type.toLowerCase() == "custom" ?  state.dimensions.height : 1;
     let normalisedCoords = {
         diameter: diameter,
         topLeft: {
-            x: xLeft / layout.width,
-            y: yTop / layout.height,
+            x: (xLeft / layout.width) * customWidth,
+            y: (yTop / layout.height) * customHeight,
         },
         bottomRight: {
-            x: xRight / layout.width,
-            y: yBottom / layout.height,
+            x: (xRight / layout.width) * customWidth,
+            y: (yBottom / layout.height) * customHeight,
         },
-        mid: { x: xMid / layout.width, y: yMid / layout.height },
+        mid: { x: (xMid / layout.width) * customWidth, y: (yMid / layout.height) * customHeight },
     };
     boundingBox.push({
         id: idx++,
@@ -162,6 +164,6 @@ function processImage(){
 
         }
     }
-    console.log('finished')
+    console.log('finished.')
     createOutput();
 }
