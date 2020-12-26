@@ -96,8 +96,7 @@
   }
 
   .caret{
-    position: absolute;
-    left:15em;
+    float:right;
   }
 
   .center {
@@ -139,7 +138,7 @@
     <div class="panel">
       <div class="fakeimg" style="height:60px;">
         <div>
-          <select style="width: 100%;" aria-placeholder="Select your board">
+          <select id="selLayout" style="width: 100%;" aria-placeholder="Select your board">
             <option>Ice Cold Beer</option>
           </select>
         </div>
@@ -153,13 +152,13 @@
     <button class="accordion"> <strong>Dimensions</strong><i class="caret fas fa-caret-down"></i></button>
     <div class="panel">
       <div class="fakeimg" style="height:60px;"> 
-        <select id="selDimensionType" aria-placeholder="Please select type of dimension" onchange="selDimensionTypeChange(this)">
+        <select id="selDimensionType" aria-placeholder="Select type of dimension" onchange="selDimensionTypeChange(this)">
           <option>Normalised</option>
           <option>Custom</option>
         </select>
       </div>
       <div>
-        <p>Please enter the dimensions for you desired board layout.</p>  
+        <p>Enter the dimensions for you desired board layout.</p>  
         <div class="fakeimg" style="height:60px;"> 
           <input id="txtWidth" type="text" width="100px" value="1000" disabled/> Width 
         </div><br>
@@ -171,7 +170,18 @@
     <button class="accordion"> <strong>Output</strong><i class="caret fas fa-caret-down"></i></button>
     <div class="panel">
       <div>
-        <p>Please enter the ouput type and click the "Generate Output" button once you are happy with all the options. The output will be produced in the text area below.</p>     
+        <p>Enter the colour of the holes you want to produced coordinate data for.</p>     
+      </div>
+      <div class="fakeimg" style="height:60px;"> 
+        <select id="selColour" aria-placeholder="Please select type of output">
+          <option>Red</option>
+          <option>Green</option>
+          <option>Yellow</option>
+          <option>Blue</option>
+        </select>
+      </div>
+      <div>
+        <p>Enter the output type and click the "Generate Output" button once you are happy with all the options. The output will be produced in the text area below.</p>     
       </div>
       <div class="fakeimg" style="height:60px;"> 
         <select id="selOutputType" aria-placeholder="Please select type of output">
@@ -194,12 +204,24 @@
   <div class="main">
     <div class="fakeimg checkeredBoard">
       <canvas id="canvas" width="800" height="600"></canvas>
-      <!--<img src="Layouts/icecoldbeer-colour.gif">-->
     </div>
-    <p>Some text..</p>
+    <p></p>
   </div>
 </div>
 <script>
+  const state = {
+    layout: null,
+    dimensions : {
+      type: null,
+      width: null,
+      height: null,
+    },
+    output : {
+      colour: null,
+      format: null
+    }
+  }
+
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
   const worker = new Worker("worker.js");
@@ -223,6 +245,7 @@
 
   const outputMap = () => {
     console.log("Generating map ...");
+    updateState();
     worker.postMessage({ 
       id:"pixelData", 
       payload: {
@@ -230,7 +253,15 @@
       }
     });
   }
-
+  const updateState = () => {
+    state.layout = document.getElementById("selLayout").value;
+    state.dimensions.type = document.getElementById("selDimensionType").value;
+    state.dimensions.width = document.getElementById("txtWidth").value;
+    state.dimensions.height = document.getElementById("txtHeight").value;
+    state.output.colour = document.getElementById("selColour").value;
+    state.output.format = document.getElementById("selOutputType").value;
+    console.log(state);
+  }
   const selDimensionTypeChange = (obj)  => {
     if (obj.value === "Custom"){
       document.getElementById("txtWidth").disabled = false;
