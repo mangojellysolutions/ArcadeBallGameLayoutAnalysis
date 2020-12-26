@@ -7,6 +7,11 @@ const colours = {
 
 const maxDistance = 125;
 
+let boundingBox = [];
+let outputJSON = null;
+let idx = 0;
+let state = null;
+
 let layout = {
     pixels: null,
     width: 0,
@@ -29,11 +34,6 @@ let layout = {
         }
     }
 }
-
-let boundingBox = [];
-let outputJSON = null;
-let idx = 0;
-let state = null;
 
 self.onmessage = function(e) {
     switch(e.data.id){

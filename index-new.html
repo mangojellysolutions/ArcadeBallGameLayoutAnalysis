@@ -158,7 +158,7 @@
         </select>
       </div>
       <div>
-        <p>Enter the dimensions for you desired board layout.</p>  
+        <p id="promptDimension">Enter the dimensions for you desired board layout.</p>  
         <div class="fakeimg" style="height:60px;"> 
           <input id="txtWidth" type="text" width="100px" value="1000" disabled/> Width (mm)
         </div><br>
@@ -223,7 +223,7 @@
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
   const worker = new Worker("worker.js");
-  
+  document.getElementById("promptDimension").style.color = "grey";
   worker.onmessage = (e) => {
     switch(e.data.id){
       case "result":
@@ -262,9 +262,11 @@
   }
   const selDimensionTypeChange = (obj)  => {
     if (obj.value === "Custom"){
+      document.getElementById("promptDimension").style.color = "black";
       document.getElementById("txtWidth").disabled = false;
       document.getElementById("txtHeight").disabled = false;
     } else {
+      document.getElementById("promptDimension").style.color = "grey";
       document.getElementById("txtWidth").disabled = true;
       document.getElementById("txtHeight").disabled = true;
     }
