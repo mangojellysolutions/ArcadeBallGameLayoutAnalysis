@@ -4,6 +4,7 @@ const green = {r:36, g:254, b:0};
 const maxDistance = 125;
 
 let config = {
+    //The target hole colour that we want to generate a coordinate for
     target: blue,
     bgColour: { r: 0, g: 0, b: 0 }
 }
@@ -11,24 +12,15 @@ let layout = {
     pixels: null,
     width: 0,
     height: 0,
+    
+    coordinatesToMatrixIndex: function(x, y){
+        /* data[] array position for pixel [x,y]. Rembember to multiply by 4 if you are 
+        dealing with a pixel array as made up of array entry for each RGBA value 
+        */
+        return y * this.width + x;
+    },
     getImageData : function(x, y){
-        /*
-        // top left pixel [0,0]
-data[0]: Red value for pixel [0,0],
-data[1]: Green value for pixel [0,0],
-data[2]: Blue value for pixel [0,0],
-data[3]: Alpha value for pixel [0,0],
-
-// next pixel rightward [1,0]
-data[4]: Red value for pixel [1,0],
-data[5]: Green value for pixel [1,0],
-data[6]: Blue value for pixel [1,0],
-data[7]: Alpha value for pixel [1,0],
-
-// and so on for each pixel on the canvas
-*/
-        // the data[] array position for pixel [x,y]
-        let n =  (y * this.width + x) * 4;
+        let n =  this.coordinatesToMatrixIndex(x,y) * 4;
         return {
             data: [
                 this.pixels.data[n],
