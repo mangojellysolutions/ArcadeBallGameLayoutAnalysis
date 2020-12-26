@@ -41,8 +41,6 @@
 			let ctx = canvas.getContext("2d");
 			
 			img.onload = () => {
-				canvas.width = img.width; 
-				canvas.height = img.height;
 				processImage(canvas, ctx, img);
 			};
 		</script>

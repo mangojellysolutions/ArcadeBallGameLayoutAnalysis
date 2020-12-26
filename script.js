@@ -53,7 +53,9 @@ function createOutput(){
     );
 }
 
-function processImage(canvas, ctx, img){   
+function processImage(canvas, ctx, img){  
+    canvas.width = img.width; 
+	canvas.height = img.height; 
     ctx.drawImage(img, 0, 0);
     for (let y = 0; y < canvas.height; y++) {
         for (let x = 0; x < canvas.width; x++) {
