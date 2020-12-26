@@ -52,7 +52,7 @@ self.onmessage = function(e) {
             layout.pixels = e.data.payload.pixels;
             layout.width = e.data.payload.pixels.width;
             layout.height = e.data.payload.pixels.height
-            postMessage ({test:layout.pixels.width});
+            postMessage ({id: "notification", payload: "data loaded"});
             processImage();
         break;
     }
@@ -106,6 +106,7 @@ function createOutput(){
             return obj.normalised;
         })
     );
+    postMessage ({id: "result", type:"json", payload: outputJSON});
 }
 
 function processImage(){  

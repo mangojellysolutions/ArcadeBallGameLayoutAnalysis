@@ -124,7 +124,6 @@
     }
   }
   </style>
-  <script src="config.js" ></script>
 </head>
 <body>
 <!-- Navigation Bar -->
@@ -182,7 +181,7 @@
       </div>
       <br/>
       <div>
-        <button onclick="outputMap(canvas, ctx, document.getElementById('txt'))">
+        <button onclick="outputMap()">
 					Generate Output
 				</button>
       </div>
@@ -204,7 +203,13 @@
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
   const worker = new Worker("worker.js");
+  
   worker.onmessage = (e) => {
+    switch(e.data.id){
+      case "result":
+        document.getElementById('txt').innerHTML = e.data.payload;
+      break;
+    }
 		console.log(e.data);
   }
   const img = new Image();
@@ -217,7 +222,7 @@
   };
 
   const outputMap = () => {
-    console.log("post");
+    console.log("Generating map ...");
     worker.postMessage({ 
       id:"pixelData", 
       payload: {
