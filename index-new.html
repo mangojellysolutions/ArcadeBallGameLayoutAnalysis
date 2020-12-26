@@ -124,6 +124,8 @@
     }
   }
   </style>
+  <script src="config.js" ></script>
+  <script src="script.js" ></script>
 </head>
 <body>
 <!-- Navigation Bar -->
@@ -184,15 +186,30 @@
         <button>GO!</button>
       </div>
       <br/>
+      <div>
+        <textarea style="width: 100%; height: 200px;" id="txt"></textarea>
+      </div>
     </div>
   </div>
   <div class="main">
-    <div class="fakeimg checkeredBoard"><img src="Layouts/icecoldbeer-colour.gif"></div>
+    <div class="fakeimg checkeredBoard">
+      <canvas id="canvas" width="800" height="600"></canvas>
+      <!--<img src="Layouts/icecoldbeer-colour.gif">-->
+    </div>
     <p>Some text..</p>
   </div>
 </div>
-
 <script>
+  const maxDistance = 125;
+  let img = new Image();
+  img.src = "./Layouts/icecoldbeer-colour.gif";
+  let canvas = document.getElementById("canvas");
+  let ctx = canvas.getContext("2d");
+  
+  img.onload = () => {
+    processImage(canvas, ctx, img);
+  };
+
   const selDimensionTypeChange = (obj)  => {
     if (obj.value === "Custom"){
       document.getElementById("txtWidth").disabled = false;
