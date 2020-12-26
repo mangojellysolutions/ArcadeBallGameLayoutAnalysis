@@ -146,6 +146,10 @@
       </div>
       <p>Ice cold beer, arcade game by Taito.</p>
     </div>
+    <button class="accordion"><strong>Board preview</strong><i class="caret fas fa-caret-down"></i></button>
+    <div class="panel">
+      <div align="center"><img class="previewImage" src="Layouts/icecoldbeer-colour.gif" width="200px"></div>
+    </div>
     <button class="accordion"> <strong>Dimensions</strong><i class="caret fas fa-caret-down"></i></button>
     <div class="panel">
       <div class="fakeimg" style="height:60px;"> 
@@ -164,9 +168,22 @@
         </div><br>
       </div>
     </div>
-    <button class="accordion"><strong>Board preview</strong><i class="caret fas fa-caret-down"></i></button>
+    <button class="accordion"> <strong>Output</strong><i class="caret fas fa-caret-down"></i></button>
     <div class="panel">
-      <div align="center"><img class="previewImage" src="Layouts/icecoldbeer-colour.gif" width="200px"></div>
+      <div>
+        <p>Please enter the ouput type and click the "Go" button once you are happy with all the options. The output will be produced in the text area below.</p>     
+      </div>
+      <div class="fakeimg" style="height:60px;"> 
+        <select id="selOutputType" aria-placeholder="Please select type of output">
+          <option>JSON</option>
+          <option>FreeCAD Macro</option>
+        </select>
+      </div>
+      <br/>
+      <div>
+        <button>GO!</button>
+      </div>
+      <br/>
     </div>
   </div>
   <div class="main">
