@@ -38,3 +38,17 @@ y = json.loads(x)
 
 # the result is a Python dictionary:
 print(y["age"])
+
+
+
+
+
+
+
+import json
+
+with open('path_to_file/person.json') as f:
+  data = json.load(f)
+
+# Output: {'name': 'Bob', 'languages': ['English', 'Fench']}
+print(data)
