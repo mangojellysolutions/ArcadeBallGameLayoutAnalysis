@@ -1,5 +1,11 @@
 # Playfield Layout Analyser
-Very simple layout analysis to allow output of normalised X,Y coordinates in JSON format for building mechanical arcade ball games such as 'Ice Cold Beer'. Project also contains layout, images and plans of original cabinet and game.
+Very simple layout analysis to allow a layout image to be analyised to determine the coordinates of each hole.  A output of normalised X,Y coordinates can be create in JSON format for building mechanical arcade ball games such as 'Ice Cold Beer'. Project also contains layout, images and plans of original cabinet and game.
+
+Examples of v1 being used to create the playfield of a digital version of "Ice Cold Beer" can be found in the VLogs at
+
+https://www.youtube.com/playlist?list=PLWuyJLVUNtc0dYe9nol5WcNzR4nx6sS8T
+
+
 
 ## Prerequisite 
 To load the index htm it needs to be accessed from a web-server due to access to the layout image so you will need to run from a simple http server such as using the a one liner from a terminal such as:
